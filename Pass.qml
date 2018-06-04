@@ -61,18 +61,16 @@ Item {
                     font.pointSize: 14
                     color: "white"
                     elide: Text.ElideRight
-
-                    //tooltipable
-                    TooltipArea {
-                        tip: description
-                    }
                 }
             }
 
             //Events
-            MouseArea {
+            TooltipArea {
                 width: data.width
                 height: data.height
+
+                tip: description
+
                 hoverEnabled: true
 
                 onClicked: {

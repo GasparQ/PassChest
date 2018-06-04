@@ -1,38 +1,34 @@
 import QtQuick 2.8
 import QtQuick.Window 2.2
 
-import Chest 1.0
-
 Window {
     visible: true
     width: 400
     height: 600
     title: qsTr("Password Chest")
 
-    ListView {
-        //dimension
-        width: 400
-        height: 600
+    /*PassListView { }
 
-        //style
+    EditPassView {
+        id: editView
 
-        //data
-        model: PasswordManager.passwords
-        delegate: Pass {
-            name: modelData.name
-            description: modelData.description
+        visible: false
+    }*/
 
-            onCopyToClipboard: {
-                modelData.copyToClipboard();
+    Rectangle {
+        anchors.fill: parent
+
+        color: "#20304c"
+
+        //view manager
+        ViewManager {
+            id: passChestView
+
+            views: {
+                "passlist": "PassListView.qml",
+                "editpass": "EditPassView.qml"
             }
-
-            onEdit: {
-                console.log("Edit");
-            }
-
-            onRemove: {
-                PasswordManager.removePassword(index);
-            }
+            url: "passlist"
         }
     }
 

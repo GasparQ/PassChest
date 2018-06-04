@@ -8,5 +8,9 @@
         <file>icons/edit.png</file>
         <file>icons/copytoclipboard.png</file>
         <file>ActionButton.qml</file>
+        <file>PassListView.qml</file>
+        <file>EditPassView.qml</file>
+        <file>ViewManager.qml</file>
+        <file>InputText.qml</file>
     </qresource>
 </RCC>
