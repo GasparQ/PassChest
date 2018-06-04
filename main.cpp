@@ -23,10 +23,10 @@ QObject *managerSingleton(QQmlEngine *, QJSEngine *)
     pass->setDescription("Mot de passe google, youtube, gmail, gmap, google drive et tout ce que fait google");
     pass->setPassword("toto42");
 
-    pass = toret->newPassword();
+    /*pass = toret->newPassword();
     pass->setName("PC");
     pass->setDescription("Mot de passe pc");
-    pass->setPassword("toto42");
+    pass->setPassword("toto42");*/
 
     return toret;
 }

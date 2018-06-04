@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>Pass.qml</file>
+        <file>TooltipArea.qml</file>
+        <file>Tooltip.qml</file>
+        <file>icons/remove.png</file>
+        <file>icons/edit.png</file>
+        <file>icons/copytoclipboard.png</file>
+        <file>ActionButton.qml</file>
     </qresource>
 </RCC>

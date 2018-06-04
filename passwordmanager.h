@@ -22,8 +22,8 @@ public:
     QList<QVariant> passwords() const;
 
 public:
-    Password *newPassword();
-    void removePassword(int index);
+    Q_INVOKABLE Password *newPassword();
+    Q_INVOKABLE void removePassword(int index);
 
 signals:
     void passwordsChanged(QList<QVariant> const &passwords);
