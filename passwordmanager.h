@@ -15,8 +15,8 @@ public:
     PasswordManager();
 
 public:
-    Q_INVOKABLE void load(QString const &passfile, QString const &password);
-    Q_INVOKABLE void save(QString const &passfile);
+    Q_INVOKABLE void load(QUrl const &passfile, QString const &password);
+    Q_INVOKABLE void save(QUrl const &passfile);
 
 public:
     QList<QVariant> passwords() const;

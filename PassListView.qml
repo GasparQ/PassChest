@@ -80,7 +80,20 @@ Item {
                 border.color: "white"
 
                 onReleased: {
-                    PasswordManager.save("C:\\Users\\GasparQ\\Desktop\\save.pass")
+                    _saveDiag.visible = true;
+                }
+
+                FileDialog {
+                    id: _saveDiag
+
+                    title: "Choose a location"
+                    selectExisting: false
+                    selectMultiple: false
+                    selectFolder: false
+
+                    onAccepted: {
+                        PasswordManager.save(_saveDiag.fileUrl)
+                    }
                 }
             }
 
@@ -96,7 +109,20 @@ Item {
                 border.color: "white"
 
                 onReleased: {
-                    PasswordManager.load("C:\\Users\\GasparQ\\Desktop\\save.pass", "");
+                    _loadDiag.visible = true;
+                }
+
+                FileDialog {
+                    id: _loadDiag
+
+                    title: "Choose a file"
+                    selectExisting: true
+                    selectMultiple: false
+                    selectFolder: false
+
+                    onAccepted: {
+                        PasswordManager.load(_loadDiag.fileUrl, "");
+                    }
                 }
             }
         }
