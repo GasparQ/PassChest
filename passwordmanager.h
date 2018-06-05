@@ -23,13 +23,14 @@ public:
 
 public:
     Q_INVOKABLE Password *newPassword();
-    Q_INVOKABLE void removePassword(int index);
+    Q_INVOKABLE void removePassword(quint32 id);
 
 signals:
     void passwordsChanged(QList<QVariant> const &passwords);
 
 private:
-    QList<Password *>   m_passwords;
+    QMap<quint32, Password *>   m_passwords;
+    quint32 m_currentId;
 };
 
 #endif // PASSWORDMANAGER_H

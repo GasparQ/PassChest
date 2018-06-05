@@ -5,7 +5,9 @@
 
 #include "passwordmanager.h"
 
-PasswordManager::PasswordManager()
+PasswordManager::PasswordManager() :
+    m_passwords(),
+    m_currentId(0)
 {
 
 }
@@ -45,14 +47,14 @@ Password *PasswordManager::newPassword()
 {
     Password *toadd = new Password();
 
-    m_passwords.append(toadd);
+    toadd->setId(m_currentId++);
+    m_passwords[toadd->id()] = toadd;
     emit passwordsChanged(passwords());
     return toadd;
 }
 
-void PasswordManager::removePassword(int index)
+void PasswordManager::removePassword(quint32 id)
 {
-    m_passwords.removeAt(index);
-
+    m_passwords.remove(id);
     emit passwordsChanged(passwords());
 }

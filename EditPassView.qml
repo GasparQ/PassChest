@@ -1,5 +1,7 @@
 import QtQuick 2.8
 
+import Chest 1.0
+
 Item {
     property var toEdit: null
 
@@ -9,6 +11,8 @@ Item {
         if (toEdit) {
             _name.text = toEdit.name;
             _description.text = toEdit.description;
+            _password.text = "";
+            _confirmPassword.text = "";
         }
     }
 
@@ -134,6 +138,9 @@ Item {
             value.font.pointSize: 16
 
             onReleased: {
+                if (!toEdit.name || !toEdit.description || !toEdit.hasPassword()) {
+                    PasswordManager.removePassword(toEdit.id);
+                }
                 passChestView.url = 'passlist';
             }
         }

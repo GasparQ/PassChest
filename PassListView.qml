@@ -1,30 +1,64 @@
 import QtQuick 2.0
+import QtQuick.Controls 1.4
 
 import Chest 1.0
 
-ListView {
-    //dimension
+Item {
     anchors.fill: parent
 
-    //style
+    Column {
+        anchors.fill: parent
 
-    //data
-    model: PasswordManager.passwords
-    delegate: Pass {
-        name: modelData.name
-        description: modelData.description
+        Rectangle {
+            height: parent.height - _addButton.height
+            width: parent.width
 
-        onCopyToClipboard: {
-            modelData.copyToClipboard();
+            color: "transparent"
+
+            ListView {
+                id: _passlist
+
+                anchors.fill: parent
+
+                //style
+
+                //data
+                model: PasswordManager.passwords
+                delegate: Pass {
+                    name: modelData.name
+                    description: modelData.description
+
+                    onCopyToClipboard: {
+                        modelData.copyToClipboard();
+                    }
+
+                    onEdit: {
+                        passChestView.views['editpass'].toEdit = modelData;
+                        passChestView.url = 'editpass';
+                    }
+
+                    onRemove: {
+                        PasswordManager.removePassword(modelData.id);
+                    }
+                }
+            }
         }
 
-        onEdit: {
-            passChestView.views['editpass'].toEdit = modelData;
-            passChestView.url = 'editpass';
-        }
+        IconButton {
+            id: _addButton
 
-        onRemove: {
-            PasswordManager.removePassword(index);
+            icon.source: "icons/add.png"
+            icon.horizontalAlignment: Image.AlignHCenter
+
+            defaultColor: "#20304c"
+
+            height: 100
+            width: parent.width
+
+            onReleased: {
+                passChestView.views["editpass"].toEdit = PasswordManager.newPassword();
+                passChestView.url = "editpass";
+            }
         }
     }
 }
