@@ -39,6 +39,11 @@ void Password::setPassword(const QString &value)
     m_pass = value;
 }
 
+bool Password::hasPassword() const
+{
+    return !m_pass.isEmpty();
+}
+
 void Password::copyToClipboard() const
 {
     QApplication::clipboard()->setText(m_pass);

@@ -12,5 +12,7 @@
         <file>EditPassView.qml</file>
         <file>ViewManager.qml</file>
         <file>InputText.qml</file>
+        <file>IconButton.qml</file>
+        <file>TextButton.qml</file>
     </qresource>
 </RCC>

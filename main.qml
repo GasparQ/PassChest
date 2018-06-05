@@ -3,17 +3,9 @@ import QtQuick.Window 2.2
 
 Window {
     visible: true
-    width: 400
-    height: 600
+    width: 400; maximumWidth: 400; minimumWidth: 400;
+    height: 600; maximumHeight: 600; minimumHeight: 600;
     title: qsTr("Password Chest")
-
-    /*PassListView { }
-
-    EditPassView {
-        id: editView
-
-        visible: false
-    }*/
 
     Rectangle {
         anchors.fill: parent

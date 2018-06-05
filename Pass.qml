@@ -100,12 +100,12 @@ Item {
                 anchors.fill: parent
 
                 //copy to clipboard
-                ActionButton {
+                IconButton {
                     width: 100
                     height: parent.height
 
                     defaultColor: "#557bba";
-                    iconUrl: "icons/copytoclipboard.png"
+                    icon.source: "icons/copytoclipboard.png"
                     border.color: "white"
 
                     onClicked: {
@@ -114,12 +114,12 @@ Item {
                 }
 
                 //edit
-                ActionButton {
+                IconButton {
                     width: 100
                     height: parent.height
 
                     defaultColor: "#557bba";
-                    iconUrl: "icons/edit.png"
+                    icon.source: "icons/edit.png"
                     border.color: "white"
 
                     onClicked: {
@@ -128,12 +128,12 @@ Item {
                 }
 
                 //remove
-                ActionButton {
+                IconButton {
                     width: 100
                     height: parent.height
 
                     defaultColor: "#557bba";
-                    iconUrl: "icons/remove.png"
+                    icon.source: "icons/remove.png"
                     border.color: "white"
 
                     onClicked: {

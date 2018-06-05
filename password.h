@@ -25,6 +25,7 @@ public:
     void setName(QString const &value);
     void setDescription(QString const &value);
     Q_INVOKABLE void setPassword(QString const &value);
+    Q_INVOKABLE bool hasPassword() const;
 
 public:
     Q_INVOKABLE void copyToClipboard() const;

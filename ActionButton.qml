@@ -5,8 +5,6 @@ Rectangle {
     property color hoverColor: Qt.lighter(defaultColor)
     property color clickColor: defaultColor
 
-    property string iconUrl: ""
-
     id: button
 
     signal clicked()
@@ -19,11 +17,6 @@ Rectangle {
     height: 100
 
     color: defaultColor
-
-    Image {
-        anchors.centerIn: parent
-        source: iconUrl
-    }
 
     MouseArea {
         anchors.fill: parent

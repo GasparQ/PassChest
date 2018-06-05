@@ -3,7 +3,9 @@ import QtQuick 2.8
 TextInput {
     id: _val
 
-    property alias placeholder: _placeholder.text
+    property alias placeholder: _placeholder
+    property alias error: _error.text
+    property alias backgroundColor: _background.color
 
     clip: true
 
@@ -11,20 +13,36 @@ TextInput {
     padding: 10
 
     Rectangle {
+        id: _background
+
         anchors.fill: parent
         color: "white"
         z: parent.z - 1
+        radius: 5
     }
 
     Text {
         id: _placeholder
 
-        anchors.centerIn: parent
+        height: parent.height
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        verticalAlignment: Text.AlignVCenter
 
-        font.pointSize: 12
-
-        color: "grey"
-
+        font.pointSize: 10
+        color: "lightgrey"
         visible: _val.length === 0
+    }
+
+    Text {
+        id: _error
+
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+
+        color: "crimson"
+        anchors.leftMargin: 5
+        anchors.bottomMargin: 3
+        font.pointSize: 7
     }
 }
