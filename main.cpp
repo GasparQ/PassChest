@@ -8,7 +8,7 @@ QObject *managerSingleton(QQmlEngine *, QJSEngine *)
 {
     PasswordManager *toret = new PasswordManager();
 
-    Password *pass = toret->newPassword();
+    /*Password *pass = toret->newPassword();
     pass->setName("Facebook");
     pass->setDescription("Mot de passe facebook");
     pass->setPassword("toto42");

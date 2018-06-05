@@ -10,5 +10,7 @@ ActionButton {
 
         anchors.centerIn: parent
         source: iconUrl
+
+        horizontalAlignment: Image.AlignHCenter
     }
 }

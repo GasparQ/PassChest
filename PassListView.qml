@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
+import QtQuick.Dialogs 1.2
 
 import Chest 1.0
 
@@ -10,7 +11,7 @@ Item {
         anchors.fill: parent
 
         Rectangle {
-            height: parent.height - _addButton.height
+            height: parent.height - _listActions.height
             width: parent.width
 
             color: "transparent"
@@ -44,20 +45,59 @@ Item {
             }
         }
 
-        IconButton {
-            id: _addButton
+        Row {
+            id: _listActions
 
-            icon.source: "icons/add.png"
-            icon.horizontalAlignment: Image.AlignHCenter
-
-            defaultColor: "#20304c"
-
-            height: 100
             width: parent.width
+            height: 100
 
-            onReleased: {
-                passChestView.views["editpass"].toEdit = PasswordManager.newPassword();
-                passChestView.url = "editpass";
+            IconButton {
+                id: _addButton
+
+                width: parent.width / parent.children.length
+                height: parent.height
+
+                icon.source: "icons/add.png"
+
+                defaultColor: "#20304c"
+                border.color: "white"
+
+                onReleased: {
+                    passChestView.views["editpass"].toEdit = PasswordManager.newPassword();
+                    passChestView.url = "editpass";
+                }
+            }
+
+            IconButton {
+                id: _saveButton
+
+                width: parent.width / parent.children.length
+                height: parent.height
+
+                icon.source: "icons/save.png"
+
+                defaultColor: "#20304c"
+                border.color: "white"
+
+                onReleased: {
+                    PasswordManager.save("C:\\Users\\GasparQ\\Desktop\\save.pass")
+                }
+            }
+
+            IconButton {
+                id: _loadButton
+
+                width: parent.width / parent.children.length
+                height: parent.height
+
+                icon.source: "icons/load.png"
+
+                defaultColor: "#20304c"
+                border.color: "white"
+
+                onReleased: {
+                    PasswordManager.load("C:\\Users\\GasparQ\\Desktop\\save.pass", "");
+                }
             }
         }
     }

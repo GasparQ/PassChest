@@ -1,3 +1,6 @@
+#include <fstream>
+#include <sstream>
+
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -12,9 +15,26 @@ PasswordManager::PasswordManager() :
 
 }
 
-void PasswordManager::load(const QString &passfile, const QString &password)
+void PasswordManager::load(const QString &passfile, const QString &)
 {
+    QJsonDocument doc;
 
+    std::ifstream file(passfile.toStdString());
+
+    if (file.is_open()) {
+        std::stringstream stream;
+
+        stream << file.rdbuf();
+        doc = QJsonDocument::fromJson(QString::fromStdString(stream.str()).toUtf8());
+        for (QJsonValueRef const &curr : doc["passwords"].toArray()) {
+            Password *toadd = newPassword();
+
+            toadd->setName(curr.toObject()["name"].toString());
+            toadd->setDescription(curr.toObject()["description"].toString());
+            toadd->setPassword(curr.toObject()["password"].toString());
+        }
+        file.close();
+    }
 }
 
 void PasswordManager::save(const QString &passfile)
@@ -29,7 +49,15 @@ void PasswordManager::save(const QString &passfile)
     obj.insert("passwords", QJsonValue(arr));
     doc.setObject(obj);
 
-    qDebug() << doc.toJson(QJsonDocument::JsonFormat::Compact);
+    std::ofstream   file(passfile.toStdString());
+
+    if (file.is_open()) {
+        QString data(doc.toJson(QJsonDocument::JsonFormat::Compact));
+
+        file.write(data.toStdString().c_str(), data.size());
+        file.close();
+    }
+    //qDebug() << doc.toJson(QJsonDocument::JsonFormat::Compact);
 }
 
 QList<QVariant> PasswordManager::passwords() const

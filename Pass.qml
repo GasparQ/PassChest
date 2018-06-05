@@ -66,6 +66,8 @@ Item {
 
             //Events
             TooltipArea {
+                id: _passArea
+
                 width: data.width
                 height: data.height
 
@@ -74,10 +76,8 @@ Item {
                 hoverEnabled: true
 
                 onClicked: {
-                    if (pass.x == 0)
-                        pass.x = -300;
-                    else
-                        pass.x = 0;
+                    if (pass.state === "open") pass.state = "close";
+                    else pass.state = "open";
                 }
 
                 onEntered: {
@@ -141,6 +141,34 @@ Item {
                     }
                 }
             }
+        }
+    }
+
+    state: "close"
+    states: [
+        State {
+            name: "open"
+            PropertyChanges {
+                target: pass
+                x: -300
+            }
+        },
+
+        State {
+            name: "close"
+            PropertyChanges {
+                target: pass
+                x: 0
+            }
+        }
+    ]
+
+    transitions: Transition {
+        from: "open"; to: "close"; reversible: true
+        NumberAnimation {
+            duration: 500
+            properties: "x"
+            easing.type: Easing.InOutQuad
         }
     }
 }

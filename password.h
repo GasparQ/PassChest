@@ -38,16 +38,7 @@ signals:
     void descriptionChanged(QString const &description);
 
 public:
-    operator QJsonValue() const
-    {
-        QJsonObject obj;
-
-        obj.insert("name", QJsonValue(m_name));
-        obj.insert("description", QJsonValue(m_description));
-        obj.insert("password", QJsonValue(m_pass));
-
-        return QJsonValue(obj);
-    }
+    operator QJsonValue() const;
 
 private:
     quint32 m_id;
