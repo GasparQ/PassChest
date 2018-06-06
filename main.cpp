@@ -1,34 +1,16 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QSettings>
+#include <QDebug>
 
 #include "password.h"
 #include "passwordmanager.h"
 
+PasswordManager *manager = new PasswordManager();
+
 QObject *managerSingleton(QQmlEngine *, QJSEngine *)
 {
-    PasswordManager *toret = new PasswordManager();
-
-    /*Password *pass = toret->newPassword();
-    pass->setName("Facebook");
-    pass->setDescription("Mot de passe facebook");
-    pass->setPassword("toto42");
-
-    pass = toret->newPassword();
-    pass->setName("Twitter");
-    pass->setDescription("Mot de passe twitter");
-    pass->setPassword("toto42");
-
-    pass = toret->newPassword();
-    pass->setName("Google");
-    pass->setDescription("Mot de passe google, youtube, gmail, gmap, google drive et tout ce que fait google");
-    pass->setPassword("toto42");
-
-    /*pass = toret->newPassword();
-    pass->setName("PC");
-    pass->setDescription("Mot de passe pc");
-    pass->setPassword("toto42");*/
-
-    return toret;
+    return manager;
 }
 
 int main(int argc, char *argv[])
@@ -36,7 +18,20 @@ int main(int argc, char *argv[])
     qmlRegisterType<Password>("Chest", 1, 0, "Password");
     qmlRegisterSingletonType<PasswordManager>("Chest", 1, 0, "PasswordManager", managerSingleton);
 
+    QCoreApplication::setOrganizationName("GasparQ");
+    QCoreApplication::setOrganizationDomain("passchest.io");
+    QCoreApplication::setApplicationName("PassChest");
+
     QGuiApplication app(argc, argv);
+    QSettings settings;
+
+    if (settings.contains("lastFile"))
+        manager->load(settings.value("lastFile").toString(), "");
+
+    QObject::connect(manager, &PasswordManager::loaded, [&settings](QUrl const &passfile) {
+        qDebug() << "Save last file value to: " << passfile.toString();
+        settings.setValue("lastFile", passfile.toString());
+    });
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

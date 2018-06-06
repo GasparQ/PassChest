@@ -18,11 +18,10 @@ PasswordManager::PasswordManager() :
 
 void PasswordManager::load(const QUrl &passfile, const QString &)
 {
-    QJsonDocument doc;
-
     std::ifstream file(passfile.toLocalFile().toStdString());
 
     if (file.is_open()) {
+        QJsonDocument doc;
         std::stringstream stream;
 
         stream << file.rdbuf();
@@ -38,30 +37,31 @@ void PasswordManager::load(const QUrl &passfile, const QString &)
             toadd->setPassword(curr.toObject()["password"].toString());
         }
         file.close();
+        emit loaded(passfile);
     }
 }
 
 void PasswordManager::save(const QUrl &passfile)
 {
-    QJsonDocument doc;
-    QJsonObject obj;
-
-    QJsonArray arr;
-
-    for (Password *curr : m_passwords) arr.append(*curr);
-
-    obj.insert("passwords", QJsonValue(arr));
-    doc.setObject(obj);
-
     std::ofstream   file(passfile.toLocalFile().toStdString());
 
     if (file.is_open()) {
+        QJsonDocument doc;
+        QJsonObject obj;
+
+        QJsonArray arr;
+
+        for (Password *curr : m_passwords) arr.append(*curr);
+
+        obj.insert("passwords", QJsonValue(arr));
+        doc.setObject(obj);
+
         QString data(doc.toJson(QJsonDocument::JsonFormat::Compact));
 
         file.write(data.toStdString().c_str(), data.size());
         file.close();
+        emit saved(passfile);
     }
-    //qDebug() << doc.toJson(QJsonDocument::JsonFormat::Compact);
 }
 
 QList<QVariant> PasswordManager::passwords() const

@@ -27,6 +27,8 @@ public:
 
 signals:
     void passwordsChanged(QList<QVariant> const &passwords);
+    void loaded(QUrl const &file);
+    void saved(QUrl const &file);
 
 private:
     QMap<quint32, Password *>   m_passwords;
