@@ -7,6 +7,28 @@ import Chest 1.0
 Item {
     anchors.fill: parent
 
+    function loadFile(path) {
+        passChestView.views["askpass"].onConfirmed = function(pass) {
+            PasswordManager.load(path, pass);
+            passChestView.url = "passlist";
+        };
+        passChestView.views["askpass"].onCanceled = function() {
+            passChestView.url = "passlist";
+        };
+        passChestView.url = "askpass";
+    }
+
+    function saveFile(path) {
+        passChestView.views["askpass"].onConfirmed = function(pass) {
+            PasswordManager.save(path, pass);
+            passChestView.url = "passlist";
+        };
+        passChestView.views["askpass"].onCanceled = function() {
+            passChestView.url = "passlist";
+        };
+        passChestView.url = "askpass";
+    }
+
     Column {
         anchors.fill: parent
 
@@ -92,7 +114,7 @@ Item {
                     selectFolder: false
 
                     onAccepted: {
-                        PasswordManager.save(_saveDiag.fileUrl)
+                        saveFile(_saveDiag.fileUrl);
                     }
                 }
             }
@@ -121,7 +143,7 @@ Item {
                     selectFolder: false
 
                     onAccepted: {
-                        PasswordManager.load(_loadDiag.fileUrl, "");
+                        loadFile(_loadDiag.fileUrl);
                     }
                 }
             }

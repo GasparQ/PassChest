@@ -2,6 +2,8 @@
 #include <QQmlApplicationEngine>
 #include <QSettings>
 #include <QDebug>
+#include <QQuickItem>
+#include <QObject>
 
 #include "password.h"
 #include "passwordmanager.h"
@@ -28,18 +30,22 @@ int main(int argc, char *argv[])
     if (!manager->initialize(app.applicationDirPath()))
         return -1;
 
-    if (settings.contains("lastFile"))
-        manager->load(settings.value("lastFile").toString(), "");
-
-    std::function<void(QUrl const &)> settingsCb = [&settings](QUrl const &passfile) {
-        settings.setValue("lastFile", passfile.toString());
+    std::function<void(QUrl const &)> updateSettings = [&settings](QUrl const &file) {
+        settings.setValue("lastFile", file.toString());
     };
 
-    QObject::connect(manager, &PasswordManager::loaded, settingsCb);
-    QObject::connect(manager, &PasswordManager::saved, settingsCb);
+    QObject::connect(manager, &PasswordManager::loaded, updateSettings);
+    QObject::connect(manager, &PasswordManager::saved, updateSettings);
+
+    if (settings.contains("lastFile"))
+    {
+        manager->setLastFileOpened(settings.value("lastFile").toString());
+    }
 
     QQmlApplicationEngine engine;
+
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+
     if (engine.rootObjects().isEmpty())
         return -1;
 

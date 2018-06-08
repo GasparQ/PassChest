@@ -18,9 +18,9 @@ Item {
     anchors.fill: parent
 
     onViewsChanged: {
-        for (var k in views) {
+        /*for (var k in views) {
             views[k] = Qt.createComponent(views[k]).createObject(view);
-        }
+        }*/
         refresh();
     }
 

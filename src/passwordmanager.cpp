@@ -11,6 +11,8 @@
 
 #include "passwordmanager.h"
 
+const QString PasswordManager::LAST_FILE = "lastFile";
+
 PasswordManager::PasswordManager() :
     m_cipherer(),
     m_passwords(),
@@ -24,7 +26,7 @@ bool PasswordManager::initialize(const QString &applicationPath)
     return m_cipherer.initialize(applicationPath);
 }
 
-bool PasswordManager::load(const QUrl &passfile, const QString &)
+bool PasswordManager::load(const QUrl &passfile, const QString &password)
 {
     QFile   file(passfile.toLocalFile());
 
@@ -36,7 +38,7 @@ bool PasswordManager::load(const QUrl &passfile, const QString &)
 
     QByteArray data;
 
-    if (!m_cipherer.decrypt(file.readAll(), data, "toto42"))
+    if (!m_cipherer.decrypt(file.readAll(), data, password))
     {
         return false;
     }
@@ -60,7 +62,7 @@ bool PasswordManager::load(const QUrl &passfile, const QString &)
     return true;
 }
 
-bool PasswordManager::save(const QUrl &passfile)
+bool PasswordManager::save(const QUrl &passfile, QString const &password)
 {
     QJsonObject obj;
     QJsonArray arr;
@@ -71,7 +73,7 @@ bool PasswordManager::save(const QUrl &passfile)
         arr.append(*curr);
     }
     obj.insert("passwords", QJsonValue(arr));
-    if (m_cipherer.encrypt(QJsonDocument(obj).toJson(QJsonDocument::JsonFormat::Compact), data, "toto42"))
+    if (m_cipherer.encrypt(QJsonDocument(obj).toJson(QJsonDocument::JsonFormat::Compact), data, password))
     {
         QFile file(passfile.toLocalFile());
 
@@ -99,6 +101,16 @@ QList<QVariant> PasswordManager::passwords() const
         toret.append(QVariant::fromValue(curr));
     }
     return toret;
+}
+
+const QString &PasswordManager::lastFileOpened() const
+{
+    return m_lastFileOpened;
+}
+
+void PasswordManager::setLastFileOpened(const QString &value)
+{
+    m_lastFileOpened = value;
 }
 
 Password *PasswordManager::newPassword()
