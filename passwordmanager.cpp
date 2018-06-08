@@ -6,62 +6,88 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QDebug>
+#include <QProcess>
+#include <QFileInfo>
 
 #include "passwordmanager.h"
 
 PasswordManager::PasswordManager() :
+    m_cipherer(),
     m_passwords(),
     m_currentId(0)
 {
 
 }
 
-void PasswordManager::load(const QUrl &passfile, const QString &)
+bool PasswordManager::initialize(const QString &applicationPath)
 {
-    std::ifstream file(passfile.toLocalFile().toStdString());
-
-    if (file.is_open()) {
-        QJsonDocument doc;
-        std::stringstream stream;
-
-        stream << file.rdbuf();
-        doc = QJsonDocument::fromJson(QString::fromStdString(stream.str()).toUtf8());
-        m_passwords.clear();
-        emit passwordsChanged(passwords());
-        m_currentId = 0;
-        for (QJsonValueRef const &curr : doc["passwords"].toArray()) {
-            Password *toadd = newPassword();
-
-            toadd->setName(curr.toObject()["name"].toString());
-            toadd->setDescription(curr.toObject()["description"].toString());
-            toadd->setPassword(curr.toObject()["password"].toString());
-        }
-        file.close();
-        emit loaded(passfile);
-    }
+    return m_cipherer.initialize(applicationPath);
 }
 
-void PasswordManager::save(const QUrl &passfile)
+bool PasswordManager::load(const QUrl &passfile, const QString &)
 {
-    std::ofstream   file(passfile.toLocalFile().toStdString());
+    QFile   file(passfile.toLocalFile());
 
-    if (file.is_open()) {
-        QJsonDocument doc;
-        QJsonObject obj;
-
-        QJsonArray arr;
-
-        for (Password *curr : m_passwords) arr.append(*curr);
-
-        obj.insert("passwords", QJsonValue(arr));
-        doc.setObject(obj);
-
-        QString data(doc.toJson(QJsonDocument::JsonFormat::Compact));
-
-        file.write(data.toStdString().c_str(), data.size());
-        file.close();
-        emit saved(passfile);
+    if (!file.open(QFile::ReadOnly))
+    {
+        qWarning() << "Error: Cannot open file " << passfile.toLocalFile() << ": " << file.errorString();
+        return false;
     }
+
+    QByteArray data;
+
+    if (!m_cipherer.decrypt(file.readAll(), data, "", ""))
+    {
+        return false;
+    }
+
+    QJsonDocument doc;
+
+    doc = QJsonDocument::fromJson(data);
+    m_passwords.clear();
+    emit passwordsChanged(passwords());
+    m_currentId = 0;
+    for (QJsonValueRef const &curr : doc["passwords"].toArray())
+    {
+        Password *toadd = newPassword();
+
+        toadd->setName(curr.toObject()["name"].toString());
+        toadd->setDescription(curr.toObject()["description"].toString());
+        toadd->setPassword(curr.toObject()["password"].toString());
+    }
+    emit loaded(passfile);
+    file.close();
+    return true;
+}
+
+bool PasswordManager::save(const QUrl &passfile)
+{
+    QJsonObject obj;
+    QJsonArray arr;
+    QByteArray data;
+
+    for (Password *curr : m_passwords)
+    {
+        arr.append(*curr);
+    }
+    obj.insert("passwords", QJsonValue(arr));
+    if (m_cipherer.encrypt(QJsonDocument(obj).toJson(QJsonDocument::JsonFormat::Compact), data, "", ""))
+    {
+        QFile file(passfile.toLocalFile());
+
+        if (file.open(QFile::WriteOnly))
+        {
+            file.write(data);
+            file.close();
+            emit saved(passfile);
+            return true;
+        }
+        else
+        {
+            qWarning() << "Error: Cannot open file " << passfile.toLocalFile() << ": " << file.errorString();
+        }
+    }
+    return false;
 }
 
 QList<QVariant> PasswordManager::passwords() const

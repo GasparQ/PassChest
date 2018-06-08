@@ -5,6 +5,7 @@
 #include <QList>
 
 #include "password.h"
+#include "botancipher.h"
 
 class PasswordManager : public QObject
 {
@@ -15,8 +16,11 @@ public:
     PasswordManager();
 
 public:
-    Q_INVOKABLE void load(QUrl const &passfile, QString const &password);
-    Q_INVOKABLE void save(QUrl const &passfile);
+    bool initialize(QString const &applicationPath);
+
+public:
+    Q_INVOKABLE bool load(QUrl const &passfile, QString const &password);
+    Q_INVOKABLE bool save(QUrl const &passfile);
 
 public:
     QList<QVariant> passwords() const;
@@ -31,6 +35,7 @@ signals:
     void saved(QUrl const &file);
 
 private:
+    BotanCipher m_cipherer;
     QMap<quint32, Password *>   m_passwords;
     quint32 m_currentId;
 };

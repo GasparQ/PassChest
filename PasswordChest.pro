@@ -15,7 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     passwordmanager.cpp \
-    password.cpp
+    password.cpp \
+    botancipher.cpp
 
 RESOURCES += qml.qrc
 
@@ -32,4 +33,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     passwordmanager.h \
-    password.h
+    password.h \
+    botancipher.h

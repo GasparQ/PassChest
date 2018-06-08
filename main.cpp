@@ -25,13 +25,18 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QSettings settings;
 
+    if (!manager->initialize(app.applicationDirPath()))
+        return -1;
+
     if (settings.contains("lastFile"))
         manager->load(settings.value("lastFile").toString(), "");
 
-    QObject::connect(manager, &PasswordManager::loaded, [&settings](QUrl const &passfile) {
-        qDebug() << "Save last file value to: " << passfile.toString();
+    std::function<void(QUrl const &)> settingsCb = [&settings](QUrl const &passfile) {
         settings.setValue("lastFile", passfile.toString());
-    });
+    };
+
+    QObject::connect(manager, &PasswordManager::loaded, settingsCb);
+    QObject::connect(manager, &PasswordManager::saved, settingsCb);
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
