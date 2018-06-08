@@ -57,7 +57,7 @@ Item {
                 width: parent.width / parent.children.length
                 height: parent.height
 
-                icon.source: "icons/add.png"
+                icon.source: "/icons/add.png"
 
                 defaultColor: "#20304c"
                 border.color: "white"
@@ -74,7 +74,7 @@ Item {
                 width: parent.width / parent.children.length
                 height: parent.height
 
-                icon.source: "icons/save.png"
+                icon.source: "/icons/save.png"
 
                 defaultColor: "#20304c"
                 border.color: "white"
@@ -103,7 +103,7 @@ Item {
                 width: parent.width / parent.children.length
                 height: parent.height
 
-                icon.source: "icons/load.png"
+                icon.source: "/icons/load.png"
 
                 defaultColor: "#20304c"
                 border.color: "white"

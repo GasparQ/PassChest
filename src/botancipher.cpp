@@ -11,13 +11,13 @@ bool BotanCipher::initialize(const QString &applicationPath)
     QString progPath = applicationPath + "/" + BOTAN_CLIENT;
     QString dllPath = applicationPath + "/" + BOTAN_DLL;
 
-    if (!QFileInfo::exists(progPath) && !QFile::copy(":/ressources/binaries/" + BOTAN_CLIENT, progPath))
+    if (!QFileInfo::exists(progPath) && !QFile::copy(":/binaries/" + BOTAN_CLIENT, progPath))
     {
         qWarning() << "Copy failed: Unable to copy "<< BOTAN_CLIENT << " to " << progPath;
         return false;
     }
 
-    if (!QFileInfo::exists(dllPath) && !QFile::copy(":/ressources/binaries/" + BOTAN_DLL, dllPath))
+    if (!QFileInfo::exists(dllPath) && !QFile::copy(":/binaries/" + BOTAN_DLL, dllPath))
     {
         qWarning() << "Copy failed: Unable to copy " << BOTAN_DLL << " to " << dllPath;
         return false;

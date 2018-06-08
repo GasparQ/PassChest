@@ -105,7 +105,7 @@ Item {
                     height: parent.height
 
                     defaultColor: "#557bba";
-                    icon.source: "icons/copytoclipboard.png"
+                    icon.source: "/icons/copytoclipboard.png"
                     border.color: "white"
 
                     onClicked: {
@@ -119,7 +119,7 @@ Item {
                     height: parent.height
 
                     defaultColor: "#557bba";
-                    icon.source: "icons/edit.png"
+                    icon.source: "/icons/edit.png"
                     border.color: "white"
 
                     onClicked: {
@@ -133,7 +133,7 @@ Item {
                     height: parent.height
 
                     defaultColor: "#557bba";
-                    icon.source: "icons/remove.png"
+                    icon.source: "/icons/remove.png"
                     border.color: "white"
 
                     onClicked: {

@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/remove.png</file>
+        <file>icons/edit.png</file>
+        <file>icons/copytoclipboard.png</file>
+        <file>icons/add.png</file>
+        <file>icons/save.png</file>
+        <file>icons/load.png</file>
+        <file>binaries/botan.dll</file>
+        <file>binaries/botan-cli.exe</file>
+        <file>qml/ActionButton.qml</file>
+        <file>qml/EditPassView.qml</file>
+        <file>qml/IconButton.qml</file>
+        <file>qml/InputText.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/Pass.qml</file>
+        <file>qml/PassListView.qml</file>
+        <file>qml/TextButton.qml</file>
+        <file>qml/Tooltip.qml</file>
+        <file>qml/TooltipArea.qml</file>
+        <file>qml/ViewManager.qml</file>
+    </qresource>
+</RCC>
