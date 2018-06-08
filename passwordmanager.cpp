@@ -36,7 +36,7 @@ bool PasswordManager::load(const QUrl &passfile, const QString &)
 
     QByteArray data;
 
-    if (!m_cipherer.decrypt(file.readAll(), data, "", ""))
+    if (!m_cipherer.decrypt(file.readAll(), data, "toto42"))
     {
         return false;
     }
@@ -71,7 +71,7 @@ bool PasswordManager::save(const QUrl &passfile)
         arr.append(*curr);
     }
     obj.insert("passwords", QJsonValue(arr));
-    if (m_cipherer.encrypt(QJsonDocument(obj).toJson(QJsonDocument::JsonFormat::Compact), data, "", ""))
+    if (m_cipherer.encrypt(QJsonDocument(obj).toJson(QJsonDocument::JsonFormat::Compact), data, "toto42"))
     {
         QFile file(passfile.toLocalFile());
 

@@ -18,11 +18,6 @@
         <file>icons/save.png</file>
         <file>icons/load.png</file>
         <file>ressources/binaries/botan-cli.exe</file>
-        <file>main.cpp</file>
-        <file>password.cpp</file>
-        <file>password.h</file>
-        <file>passwordmanager.cpp</file>
-        <file>passwordmanager.h</file>
         <file>ressources/binaries/botan.dll</file>
     </qresource>
 </RCC>

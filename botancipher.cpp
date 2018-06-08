@@ -27,31 +27,49 @@ bool BotanCipher::initialize(const QString &applicationPath)
     return true;
 }
 
-bool BotanCipher::encrypt(const QByteArray &input, QByteArray &output, QString const &password, QString const &salt)
+bool BotanCipher::encrypt(const QByteArray &input, QByteArray &output, QString const &password)
 {
-    Q_UNUSED(password)
-    Q_UNUSED(salt)
+    QString key, salt;
+
+    if (!getKeyAndSaltFromPassword(password, key, salt))
+    {
+        return false;
+    }
 
     return launchBotanClient({
                                  "encryption",
                                  "--mode=aes-256-cfb",
-                                 "--key=0000000000000000000000000000000000000000000000000000000000000000",
-                                 "--iv=00000000000000000000000000000000"
+                                 "--key=" + key,
+                                 "--iv=" + salt
                             }, input, output);
 }
 
-bool BotanCipher::decrypt(const QByteArray &input, QByteArray &output, QString const &password, QString const &salt)
+bool BotanCipher::decrypt(const QByteArray &input, QByteArray &output, QString const &password)
 {
-    Q_UNUSED(password)
-    Q_UNUSED(salt)
+    QString key, salt;
+
+    if (!getKeyAndSaltFromPassword(password, key, salt))
+    {
+        return false;
+    }
 
     return launchBotanClient({
                                  "encryption",
                                  "--decrypt",
                                  "--mode=aes-256-cfb",
-                                 "--key=0000000000000000000000000000000000000000000000000000000000000000",
-                                 "--iv=00000000000000000000000000000000"
-                            }, input, output);
+                                 "--key=" + key,
+                                 "--iv=" + salt
+                             }, input, output);
+}
+
+bool BotanCipher::hash(const QString &password, QString &hash)
+{
+    QByteArray data;
+
+    if (!launchBotanClient({ "hash" }, password.toLatin1(), data))
+        return false;
+    hash = QString::fromLatin1(data).mid(0, 64);
+    return true;
 }
 
 bool BotanCipher::launchBotanClient(const QStringList &arguments, QByteArray const &input, QByteArray &output)
@@ -76,4 +94,22 @@ bool BotanCipher::launchBotanClient(const QStringList &arguments, QByteArray con
     }
     qWarning() << "Error: " << botanProcess.errorString();
     return false;
+}
+
+bool BotanCipher::getKeyAndSaltFromPassword(const QString &password, QString &key, QString &salt)
+{
+    QString passhash;
+
+    if (!hash(password, passhash))
+    {
+        return false;
+    }
+
+    key = passhash;
+
+    for (int i = 0; i < 64; i += 4) {
+        salt += QString::number(static_cast<int>(key[i].toLatin1()), 16);
+    }
+
+    return true;
 }
