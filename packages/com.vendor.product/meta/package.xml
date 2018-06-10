@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>PassChest</DisplayName>
+    <Description>Install the base application.</Description>
+    <Version>1.0.0</Version>
+    <ReleaseDate>2018-06-10</ReleaseDate>
+    <Default>true</Default>
+    <ForcedInstallation>true</ForcedInstallation>
+    <StartMenuDir>PassChest</StartMenuDir>
+    <Icon>app.ico</Icon>
+    <Script>installscript.qs</Script>
+</Package>

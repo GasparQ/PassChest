@@ -38,3 +38,18 @@ HEADERS += \
     include/passwordmanager.h
 
 INCLUDEPATH += $$PWD/include/
+
+DISTFILES += \
+    config/config.xml \
+    packages/com.vendor.product/meta/package.xml \
+    passchest.rc \
+    packages/com.vendor.product/meta/installscript.qs
+
+RC_FILE = $$PWD/passchest.rc
+
+target.path = $$PWD/packages/com.vendor.product/data/
+botan.files = $$PWD/ressources/binaries/botan*
+botan.path = $$PWD/packages/com.vendor.product/data/
+
+INSTALLS += target
+INSTALLS += botan
