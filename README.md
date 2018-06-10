@@ -45,3 +45,17 @@ For the `binarycreator.exe`, its generally installed in the Qt Tools, in the Qt 
 If you don't have the `QtInstallFramework`, you can install it with the `Qt Maintenance Tool.exe` by addind the package from `Tools`.
 
 If you provide all the path correctly, you'll normally see the `PassChestInstall.exe` created in the repository which will allow you to install the application in the computer.
+
+## Credits
+
+Thanks to [Botan library](https://github.com/randombit/botan) for providing the secure encryption system that I use.
+
+Icons (`ressources/icons`):
+-  `add.png`: Icon made by [David Gandy](https://www.flaticon.com/authors/dave-gandy) from [Flaticon](www.flaticon.com)
+-  `copytoclipboard.png`: Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [Flaticon](www.flaticon.com)
+-  `edit.png`: Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [Flaticon](www.flaticon.com)
+-  `load.png`: Icon made by [David Gandy](https://www.flaticon.com/authors/dave-gandy) from [Flaticon](www.flaticon.com)
+-  `remove.png`: Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [Flaticon](www.flaticon.com)
+-  `save.png`: Icon made by [Smashicons](https://www.flaticon.com/authors/smashicons) from [Flaticon](www.flaticon.com)
+
+Application icon `app.ico`: Icon made by [Smashicons](https://www.flaticon.com/authors/smashicons) from [Flaticon](www.flaticon.com)
