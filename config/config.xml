@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Password Chest</Name>
+    <Version>1.0.0</Version>
+    <Title>Installation setup for Password Chest</Title>
+    <Publisher>GasparQ</Publisher>
+    <StartMenuDir>PassChest</StartMenuDir>
+    <TargetDir>@ApplicationsDir@/PasswordChest</TargetDir>
+    <Logo>app.ico</Logo>
+    <MaintenanceToolName>PassChestInstaller</MaintenanceToolName>
+</Installer>
