@@ -20,5 +20,6 @@
         <file>qml/TooltipArea.qml</file>
         <file>qml/ViewManager.qml</file>
         <file>qml/AskPasswordView.qml</file>
+        <file>qml/PassFileDialog.qml</file>
     </qresource>
 </RCC>

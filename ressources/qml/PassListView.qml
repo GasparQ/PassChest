@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs 1.3
 
 import Chest 1.0
 
@@ -105,13 +105,12 @@ Item {
                     _saveDiag.visible = true;
                 }
 
-                FileDialog {
+                PassFileDialog {
                     id: _saveDiag
 
                     title: "Choose a location"
+
                     selectExisting: false
-                    selectMultiple: false
-                    selectFolder: false
 
                     onAccepted: {
                         saveFile(_saveDiag.fileUrl);
@@ -134,13 +133,12 @@ Item {
                     _loadDiag.visible = true;
                 }
 
-                FileDialog {
+                PassFileDialog {
                     id: _loadDiag
 
                     title: "Choose a file"
+
                     selectExisting: true
-                    selectMultiple: false
-                    selectFolder: false
 
                     onAccepted: {
                         loadFile(_loadDiag.fileUrl);

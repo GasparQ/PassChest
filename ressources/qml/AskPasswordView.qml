@@ -72,33 +72,41 @@ Item {
             value.font.pointSize: 16
 
             onReleased: {
+                var pass = _passwd.text;
+                var confirmPass = _confirmPasswd.text;
+
+                _passwd.text = "";
+                _passwd.focus = true;
+
+                _confirmPasswd.text = "";
+                _confirmPasswd.focus = false;
+
                 _passwd.error = "";
                 _confirmPasswd.error = "";
 
-                if (!_passwd.text)
+                if (!pass)
                 {
                     _passwd.error = "This field cannot be empty"
                 }
 
-                if (!_confirmPasswd.text)
+                if (!confirmPass)
                 {
                     _confirmPasswd.error = "This field cannot be empty"
                 }
 
-                if (_passwd.text && _confirmPasswd.text)
+                if (pass && confirmPass)
                 {
                     _confirmPasswd.error = "Passwords must be identical"
                 }
 
-                if (_passwd.text && _confirmPasswd.text && _passwd.text === _confirmPasswd.text)
+                if (pass && confirmPass && pass === confirmPass)
                 {
-                    var pass = _passwd.text;
-
-                    _passwd.text = "";
-                    _confirmPasswd.text = "";
                     if (_askPass.onConfirmed)
                         _askPass.onConfirmed(pass);
                 }
+
+                pass = ""
+                confirmPass = ""
             }
         }
 
