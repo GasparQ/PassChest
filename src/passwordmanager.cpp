@@ -40,12 +40,21 @@ bool PasswordManager::load(const QUrl &passfile, const QString &password)
 
     if (!m_cipherer.decrypt(file.readAll(), data, password))
     {
+        qWarning() << "Could not decrypt file";
         return false;
     }
 
     QJsonDocument doc;
+    QJsonParseError error;
 
-    doc = QJsonDocument::fromJson(data);
+    doc = QJsonDocument::fromJson(data, &error);
+
+    if (doc.isNull() || doc.isEmpty())
+    {
+        qWarning() << "Could not parse json in file " << passfile << ": " << error.errorString() << " (password might be invalid)";
+        return false;
+    }
+
     m_passwords.clear();
     emit passwordsChanged(passwords());
     m_currentId = 0;

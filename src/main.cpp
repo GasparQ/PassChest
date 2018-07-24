@@ -37,7 +37,11 @@ int main(int argc, char *argv[])
     QObject::connect(manager, &PasswordManager::loaded, updateSettings);
     QObject::connect(manager, &PasswordManager::saved, updateSettings);
 
-    if (settings.contains("lastFile"))
+    if (argc == 2)
+    {
+        manager->setLastFileOpened("file:/" + QString(argv[1]).replace('\\', '/'));
+    }
+    else if (settings.contains("lastFile"))
     {
         manager->setLastFileOpened(settings.value("lastFile").toString());
     }
