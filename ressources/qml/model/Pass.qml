@@ -2,6 +2,9 @@ import QtQuick 2.8
 
 import Chest 1.0
 
+import "../utils"
+import "../components"
+
 Item {
     id: pass
     property string name: ""

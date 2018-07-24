@@ -37,9 +37,13 @@ int main(int argc, char *argv[])
     QObject::connect(manager, &PasswordManager::loaded, updateSettings);
     QObject::connect(manager, &PasswordManager::saved, updateSettings);
 
-    if (settings.contains("lastFile"))
+    if (argc == 2)
     {
-        manager->setLastFileOpened(settings.value("lastFile").toString());
+        manager->setFilename(QUrl::fromLocalFile(argv[1]).toString());
+    }
+    else if (settings.contains("lastFile"))
+    {
+        manager->setFilename(settings.value("lastFile").toString());
     }
 
     QQmlApplicationEngine engine;

@@ -8,18 +8,19 @@
         <file>icons/load.png</file>
         <file>binaries/botan.dll</file>
         <file>binaries/botan-cli.exe</file>
-        <file>qml/ActionButton.qml</file>
-        <file>qml/EditPassView.qml</file>
-        <file>qml/IconButton.qml</file>
-        <file>qml/InputText.qml</file>
         <file>qml/main.qml</file>
-        <file>qml/Pass.qml</file>
-        <file>qml/PassListView.qml</file>
-        <file>qml/TextButton.qml</file>
-        <file>qml/Tooltip.qml</file>
-        <file>qml/TooltipArea.qml</file>
-        <file>qml/ViewManager.qml</file>
-        <file>qml/AskPasswordView.qml</file>
-        <file>qml/PassFileDialog.qml</file>
+        <file>qml/components/ActionButton.qml</file>
+        <file>qml/components/IconButton.qml</file>
+        <file>qml/components/InputText.qml</file>
+        <file>qml/components/TextButton.qml</file>
+        <file>qml/model/Pass.qml</file>
+        <file>qml/views/EditPassView.qml</file>
+        <file>qml/views/PassListView.qml</file>
+        <file>qml/views/SavePassView.qml</file>
+        <file>qml/views/OpenPassView.qml</file>
+        <file>qml/components/PassFileDialog.qml</file>
+        <file>qml/utils/Tooltip.qml</file>
+        <file>qml/utils/TooltipArea.qml</file>
+        <file>qml/utils/ViewManager.qml</file>
     </qresource>
 </RCC>

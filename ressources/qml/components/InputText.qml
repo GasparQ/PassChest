@@ -7,6 +7,8 @@ TextInput {
     property alias error: _error.text
     property alias backgroundColor: _background.color
 
+    horizontalAlignment: TextInput.AlignHCenter
+
     clip: true
 
     font.pointSize: 12
@@ -24,9 +26,8 @@ TextInput {
     Text {
         id: _placeholder
 
-        height: parent.height
-        anchors.right: parent.right
-        anchors.rightMargin: 10
+        anchors.fill: parent
+        horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
         font.pointSize: 10
@@ -39,9 +40,10 @@ TextInput {
 
         anchors.bottom: parent.bottom
         anchors.left: parent.left
+        anchors.right: parent.right
+        horizontalAlignment: Text.AlignHCenter
 
         color: "crimson"
-        anchors.leftMargin: 5
         anchors.bottomMargin: 3
         font.pointSize: 7
     }
