@@ -26,6 +26,7 @@ if not exist "%qmldir%" (
 )
 
 echo Deploying Qt application
+xcopy ressources\binaries\* packages\com.vendor.product\data /E /Y /C
 cd packages/com.vendor.product/data/
 "%windeploypath%" PasswordChest.exe --release --qmldir="%qmldir%"
 cd ..\..\..
