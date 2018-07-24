@@ -70,6 +70,7 @@ bool PasswordManager::load(const QString &password)
         toadd->setName(curr.toObject()["name"].toString());
         toadd->setDescription(curr.toObject()["description"].toString());
         toadd->setPassword(curr.toObject()["password"].toString());
+        m_passwords[toadd->id()] = toadd;
     }
     m_opened = true;
     m_saved = true;
@@ -116,6 +117,32 @@ void PasswordManager::reset()
     m_passwords.clear();
 }
 
+void PasswordManager::undo()
+{
+    if (canUndo())
+    {
+        m_undoStack.top().undo();
+        m_redoStack.push(m_undoStack.top());
+        m_undoStack.pop();
+        emit canRedoChanged(true);
+        if (!canUndo())
+            emit canUndoChanged(false);
+    }
+}
+
+void PasswordManager::redo()
+{
+    if (canRedo())
+    {
+        m_redoStack.top().redo();
+        m_undoStack.push(m_redoStack.top());
+        m_redoStack.pop();
+        emit canUndoChanged(true);
+        if (!canRedo())
+            emit canRedoChanged(false);
+    }
+}
+
 QList<QVariant> PasswordManager::passwords() const
 {
     QList<QVariant> toret;
@@ -142,6 +169,16 @@ bool PasswordManager::isSaved() const
     return m_saved;
 }
 
+bool PasswordManager::canUndo() const
+{
+    return !m_undoStack.empty();
+}
+
+bool PasswordManager::canRedo() const
+{
+    return !m_redoStack.empty();
+}
+
 void PasswordManager::setFilename(const QString &value)
 {
     m_filename = value;
@@ -152,20 +189,71 @@ void PasswordManager::setSaved(bool value)
     m_saved = value;
 }
 
-Password *PasswordManager::newPassword()
+void PasswordManager::addPassword(QString name, QString description, QString password)
 {
-    Password *toadd = new Password();
+    Password *pass = new Password();
 
-    toadd->setId(m_currentId++);
-    m_passwords[toadd->id()] = toadd;
-    m_saved = false;
-    emit passwordsChanged(passwords());
-    return toadd;
+    pass->setName(name);
+    pass->setDescription(description);
+    pass->setPassword(password);
+
+    exec([this, pass]() {
+        m_passwords[pass->id()] = pass;
+        m_saved = false;
+        emit passwordsChanged(passwords());
+    }, [this, pass]() {
+        m_passwords.remove(pass->id());
+        m_saved = false;
+        emit passwordsChanged(passwords());
+    });
 }
 
 void PasswordManager::removePassword(quint32 id)
 {
-    m_passwords.remove(id);
-    m_saved = false;
-    emit passwordsChanged(passwords());
+    Password *pass = m_passwords[id];
+
+    exec([this, id]() {
+        m_passwords.remove(id);
+        m_saved = false;
+        emit passwordsChanged(passwords());
+    }, [this, pass]() {
+        m_passwords[pass->id()] = pass;
+        m_saved = false;
+        emit passwordsChanged(passwords());
+    });
+}
+
+void PasswordManager::editPassword(quint32 id, QString name, QString description, QString password)
+{
+    Password *pass = m_passwords[id];
+    QString lastName = pass->name(), lastDescription = pass->description(), lastPassword = pass->password();
+
+    exec([this, pass, name, description, password]() {
+        pass->setName(name);
+        pass->setDescription(description);
+        if (!password.isEmpty())
+            pass->setPassword(password);
+    }, [this, pass, lastName, lastDescription, lastPassword]() {
+        pass->setName(lastName);
+        pass->setDescription(lastDescription);
+        pass->setPassword(lastPassword);
+    });
+}
+
+Password *PasswordManager::newPassword()
+{
+    Password *toadd = new Password();
+    int id = m_currentId++;
+
+    toadd->setId(id);
+    return toadd;
+}
+
+void PasswordManager::exec(const PasswordManager::Command::Action &redo, const PasswordManager::Command::Action &undo)
+{
+    redo();
+    m_undoStack.push(Command { undo, redo });
+    while (!m_redoStack.empty()) m_redoStack.pop();
+    emit canUndoChanged(true);
+    emit canRedoChanged(false);
 }

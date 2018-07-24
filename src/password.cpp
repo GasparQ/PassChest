@@ -27,6 +27,11 @@ QString &Password::description()
     return m_description;
 }
 
+QString &Password::password()
+{
+    return m_pass;
+}
+
 void Password::setId(quint32 id)
 {
     m_id = id;

@@ -9,7 +9,6 @@ import "../model"
 
 Item {
     id: __view__
-    anchors.fill: parent
 
     signal addPassword();
     signal copyPassword(var password);

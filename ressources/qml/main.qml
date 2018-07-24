@@ -30,7 +30,7 @@ ApplicationWindow {
         id: newAction
         onTriggered: {
             if (!PasswordManager.isSaved && savePassView.enabled)
-                savePassView.trigger();
+                saveAction.trigger();
             PasswordManager.reset();
             passChestView.url = "passlist"
         }
@@ -47,9 +47,7 @@ ApplicationWindow {
 
     Action {
         id: openAction
-        onTriggered: {
-            _openDialog.open();
-        }
+        onTriggered: _openDialog.open()
         shortcut: StandardKey.Open
     }
 
@@ -81,9 +79,7 @@ ApplicationWindow {
 
     Action {
         id: saveAsAction
-        onTriggered: {
-            _saveDialog.open();
-        }
+        onTriggered: _saveDialog.open()
         shortcut: StandardKey.SaveAs
         enabled: passChestView.url == "passlist"
     }
@@ -100,26 +96,22 @@ ApplicationWindow {
 
     Action {
         id: undoAction
-        onTriggered: {
-
-        }
+        onTriggered: PasswordManager.undo()
         shortcut: StandardKey.Undo
-        enabled: false
+        enabled: PasswordManager.canUndo
     }
 
     Action {
         id: redoAction
-        onTriggered: {
-
-        }
+        onTriggered: PasswordManager.redo()
         shortcut: StandardKey.Redo
-        enabled: false
+        enabled: PasswordManager.canRedo
     }
 
     Action {
         id: addPassAction
         onTriggered: {
-            editPassView.toEdit = PasswordManager.newPassword();
+            editPassView.toEdit = null;
             passChestView.url = "editpass";
         }
         shortcut: "Ctrl+A"
@@ -200,8 +192,12 @@ ApplicationWindow {
         ViewManager {
             id: passChestView
 
+            anchors.fill: parent
+
             OpenPassView {
                 id: openPassView
+
+                anchors.fill: parent
 
                 property string filename
 
@@ -231,6 +227,8 @@ ApplicationWindow {
             SavePassView {
                 id: savePassView
 
+                anchors.fill: parent
+
                 property string filename
 
                 onConfirmed: {
@@ -251,7 +249,11 @@ ApplicationWindow {
             EditPassView {
                 id: editPassView
 
+                anchors.fill: parent
+
                 property var toEdit: null
+
+                passwordOptionnal: toEdit != null
 
                 onToEditChanged: {
                     clear();
@@ -262,13 +264,12 @@ ApplicationWindow {
                 }
 
                 onConfirmed: {
-                    toEdit.name = name;
-                    toEdit.description = description;
-                    if (password)
-                        toEdit.setPassword(password);
+                    if (toEdit)
+                        PasswordManager.editPassword(toEdit.id, name, description, password);
+                    else
+                        PasswordManager.addPassword(name, description, password);
                     toEdit = null;
                     passChestView.url = 'passlist';
-                    PasswordManager.isSaved = false;
                 }
 
                 onCanceled: {
@@ -281,6 +282,8 @@ ApplicationWindow {
 
             PassListView {
                 id: passListView
+
+                anchors.fill: parent
 
                 onAddPassword: {
                     addPassAction.trigger();

@@ -8,8 +8,6 @@ Item {
 
     property alias passError: _passwd.error
 
-    anchors.fill: parent
-
     signal confirmed(string password)
     signal canceled()
 

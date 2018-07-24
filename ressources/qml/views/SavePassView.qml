@@ -6,8 +6,6 @@ import "../components"
 Item {
     id: _askPass
 
-    anchors.fill: parent
-
     signal confirmed(string password)
     signal canceled()
 
