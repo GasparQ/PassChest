@@ -2,18 +2,33 @@ import QtQuick 2.8
 
 import Chest 1.0
 
+import "../components"
+
 Item {
-    property var toEdit: null
+    id: __view__
+
+    property alias name: _name
+    property alias description: _description
+
+    signal confirmed(string name, string description, string password);
+    signal canceled();
 
     anchors.fill: parent
 
-    onToEditChanged: {
-        if (toEdit) {
-            _name.text = toEdit.name;
-            _description.text = toEdit.description;
-            _password.text = "";
-            _confirmPassword.text = "";
-        }
+    function clear() {
+        _name.text = "";
+        _name.error = "";
+        _description.text = "";
+        _description.error = "";
+        _password.text = "";
+        _password.error = "";
+        _confirmPassword.text = "";
+        _confirmPassword.error = "";
+        _name.focus = true;
+    }
+
+    Component.onCompleted: {
+        clear();
     }
 
     Column {
@@ -117,11 +132,7 @@ Item {
                     }
 
                     if (!_name.error && !_description.error && !_password.error && !_confirmPassword.error) {
-                        toEdit.name = _name.text;
-                        toEdit.description = _description.text;
-                        if (_password.text)
-                            toEdit.setPassword(_password.text);
-                        passChestView.url = 'passlist';
+                        __view__.confirmed(_name.text, _description.text, _password.text);
                     }
                 }
             }
@@ -138,10 +149,7 @@ Item {
             value.font.pointSize: 16
 
             onReleased: {
-                if (!toEdit.name || !toEdit.description || !toEdit.hasPassword()) {
-                    PasswordManager.removePassword(toEdit.id);
-                }
-                passChestView.url = 'passlist';
+                __view__.canceled();
             }
         }
     }

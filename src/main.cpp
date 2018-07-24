@@ -39,11 +39,11 @@ int main(int argc, char *argv[])
 
     if (argc == 2)
     {
-        manager->setLastFileOpened("file:/" + QString(argv[1]).replace('\\', '/'));
+        manager->setFilename(QUrl::fromLocalFile(argv[1]).toString());
     }
     else if (settings.contains("lastFile"))
     {
-        manager->setLastFileOpened(settings.value("lastFile").toString());
+        manager->setFilename(settings.value("lastFile").toString());
     }
 
     QQmlApplicationEngine engine;

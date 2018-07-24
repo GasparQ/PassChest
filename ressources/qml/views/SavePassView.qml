@@ -1,13 +1,15 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 
+import "../components"
+
 Item {
     id: _askPass
 
     anchors.fill: parent
 
-    property var onConfirmed: null
-    property var onCanceled: null
+    signal confirmed(string password)
+    signal canceled()
 
     Column {
         anchors.centerIn: parent
@@ -101,8 +103,7 @@ Item {
 
                 if (pass && confirmPass && pass === confirmPass)
                 {
-                    if (_askPass.onConfirmed)
-                        _askPass.onConfirmed(pass);
+                    _askPass.confirmed(pass);
                 }
 
                 pass = ""
@@ -121,8 +122,7 @@ Item {
             value.font.pointSize: 16
 
             onReleased: {
-                if (_askPass.onCanceled)
-                    _askPass.onCanceled();
+                _askPass.canceled();
             }
         }
     }
