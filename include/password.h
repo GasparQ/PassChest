@@ -16,7 +16,7 @@ class Password : public QObject
     Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
 
 public:
-    Password();
+    Password(quint32 id);
 
 public:
     qint32 id() const;
@@ -25,7 +25,6 @@ public:
     QString &password();
 
 public:
-    void setId(quint32 id);
     void setName(QString const &value);
     void setDescription(QString const &value);
     void setPassword(QString const &value);
@@ -42,7 +41,7 @@ public:
     operator QJsonValue() const;
 
 private:
-    quint32 m_id;
+    const quint32 m_id;
     QString m_name;
     QString m_description;
     QString m_pass;

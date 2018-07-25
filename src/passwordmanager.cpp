@@ -76,6 +76,7 @@ bool PasswordManager::load(const QString &password)
     m_saved = true;
     emit loaded(m_filename);
     file.close();
+    emit passwordsChanged(passwords());
     return true;
 }
 
@@ -191,12 +192,11 @@ void PasswordManager::setSaved(bool value)
 
 void PasswordManager::addPassword(QString name, QString description, QString password)
 {
-    Password *pass = new Password();
+    Password *pass = newPassword();
 
     pass->setName(name);
     pass->setDescription(description);
     pass->setPassword(password);
-
     exec([this, pass]() {
         m_passwords[pass->id()] = pass;
         m_saved = false;
@@ -242,11 +242,7 @@ void PasswordManager::editPassword(quint32 id, QString name, QString description
 
 Password *PasswordManager::newPassword()
 {
-    Password *toadd = new Password();
-    int id = m_currentId++;
-
-    toadd->setId(id);
-    return toadd;
+    return new Password(m_currentId++);
 }
 
 void PasswordManager::exec(const PasswordManager::Command::Action &redo, const PasswordManager::Command::Action &undo)

@@ -17,7 +17,7 @@ QObject *managerSingleton(QQmlEngine *, QJSEngine *)
 
 int main(int argc, char *argv[])
 {
-    qmlRegisterType<Password>("Chest", 1, 0, "Password");
+    qmlRegisterUncreatableType<Password>("Chest", 1, 0, "Password", "Passwords can only be created from PasswordManager");
     qmlRegisterSingletonType<PasswordManager>("Chest", 1, 0, "PasswordManager", managerSingleton);
 
     QCoreApplication::setOrganizationName("GasparQ");
