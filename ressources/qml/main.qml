@@ -257,14 +257,14 @@ ApplicationWindow {
 
                 onToEditChanged: {
                     clear();
-                    if (toEdit) {
+                    if (toEdit != null) {
                         name.text = toEdit.name;
                         description.text = toEdit.description;
                     }
                 }
 
                 onConfirmed: {
-                    if (toEdit)
+                    if (toEdit != null)
                         PasswordManager.editPassword(toEdit.id, name, description, password);
                     else
                         PasswordManager.addPassword(name, description, password);
@@ -273,9 +273,10 @@ ApplicationWindow {
                 }
 
                 onCanceled: {
-                    if (!toEdit.name || !toEdit.description || !toEdit.hasPassword()) {
+                    if (toEdit && (!toEdit.name || !toEdit.description || !toEdit.hasPassword())) {
                         PasswordManager.removePassword(toEdit.id); //new password canceling
                     }
+                    toEdit = null;
                     passChestView.url = 'passlist';
                 }
             }

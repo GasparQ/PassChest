@@ -3,8 +3,9 @@
 
 #include "password.h"
 
-Password::Password() :
-    m_id(static_cast<quint32>(-1)),
+Password::Password(quint32 id) :
+    QObject(nullptr),
+    m_id(id),
     m_name(),
     m_description(),
     m_pass()
@@ -30,11 +31,6 @@ QString &Password::description()
 QString &Password::password()
 {
     return m_pass;
-}
-
-void Password::setId(quint32 id)
-{
-    m_id = id;
 }
 
 void Password::setName(const QString &value)
