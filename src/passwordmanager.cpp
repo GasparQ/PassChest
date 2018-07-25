@@ -76,6 +76,7 @@ bool PasswordManager::load(const QString &password)
     m_saved = true;
     emit loaded(m_filename);
     file.close();
+    emit passwordsChanged(passwords());
     return true;
 }
 
